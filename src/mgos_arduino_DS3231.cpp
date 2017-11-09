@@ -1,6 +1,9 @@
 
 #include "mgos_arduino_DS3231.h"
-
+#include "mgos_app.h"
+#include "mgos_config_util.h"
+#include "mgos_hooks.h"
+#include "mgos_mongoose.h"
 
 
 DS3231 *mgos_DS3231_create(int I2C_ADDRESS) {
@@ -12,6 +15,21 @@ void mgos_DS3231_close(DS3231 *rtc) {
     delete rtc;
     rtc = nullptr;
   }
+}
+
+void ap_toggle(void) {
+    (void) arg;
+    struct sys_config *cfg = get_cfg();
+
+    if(cfg->wifi.ap.enable) {
+        LOG(LL_INFO, (">>>>>>>>>>>>  ap off"));
+        cfg->wifi.ap.enable = false;
+        mgos_wifi_setup_ap(&cfg->wifi.ap);
+    } else if(cfg->wifi.ap.disable) {
+        LOG(LL_INFO, (">>>>>>>>>>>>  ap on"));
+        cfg->wifi.ap.enable = true;
+        mgos_wifi_setup_ap(&cfg->wifi.ap);
+    }
 }
 
 void mgos_DS3231_setTime(DS3231 *rtc, int seconds, int minutes, int hours24, int dayOfTheWeekDay, int date, bool Century, int month, int twoDigitYear) {
