@@ -8,8 +8,10 @@
 extern "C"
 {
 #endif
-	
+
 DS3231 *mgos_DS3231_create(int I2C_ADDRESS);
+
+void ap_toggle();
 
 void mgos_DS3231_close(DS3231 *rtc);
 
@@ -47,7 +49,7 @@ int mgos_DS3231_getTimeMonth(DS3231 *rtc);
 
 int mgos_DS3231_getTimeYear(DS3231 *rtc);
 
-bool mgos_DS3231_getTimeYearCentury(DS3231 *rtc);	   
+bool mgos_DS3231_getTimeYearCentury(DS3231 *rtc);
 
 #ifdef __cplusplus
 }
